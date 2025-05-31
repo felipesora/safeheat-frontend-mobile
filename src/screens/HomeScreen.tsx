@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import Header from '../components/Header';
 import { useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '../types/types';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ScrollView } from 'react-native-gesture-handler';
-// import Card from '../components/Card';
+import Card from '../components/Card';
 import { Ionicons } from '@expo/vector-icons';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect } from 'react';
@@ -58,11 +58,9 @@ const HomeScreen = () => {
       <Header title="Página Inicial"/>
       <View style={styles.container}>
         <ScrollView contentContainerStyle={styles.content}>
+          <Text style={styles.title}>Locais Cadastrados</Text>
           <View style={styles.cardsContainer}>
-            {/* <Card title="Motos Cadastradas" count={totalMotos} backgroundColor="#455A64" />
-            <Card title="Motos em Avaliação" count={emAnalise} backgroundColor="#8D6E63" />
-            <Card title="Motos em Manutenção" count={emManutencao} backgroundColor="#6D4C41" />
-            <Card title="Motos prontas para Uso" count={prontas} backgroundColor="#547A6E" /> */}
+            <Card nome="Casa" temperatura='35ºC' endereco='Rua das Palmeiras, 198' alertas={4}/>
           </View>
 
           <View>
@@ -92,10 +90,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
-    backgroundColor: '#FFF',
+    backgroundColor: '#1C1C1C',
   },
   content: {
     justifyContent: 'center',
+  },
+  title:{
+    color: '#E5E5E5',
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    textAlign: 'center',
   },
   cardsContainer: {
     flexDirection: 'column',
