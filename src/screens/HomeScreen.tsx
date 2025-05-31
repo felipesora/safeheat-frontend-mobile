@@ -1,107 +1,108 @@
 import React, { useState } from 'react';
-import { ScrollView, FlatList, Alert, Button } from 'react-native';
-import styled from 'styled-components/native';
-import { HeaderContainer, HeaderTitle } from '../components/Header';
+import { View, StyleSheet } from 'react-native';
+import Header from '../components/Header';
+import { useNavigation } from '@react-navigation/native';
+import { RootStackParamList } from '../types/types';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { ScrollView } from 'react-native-gesture-handler';
+// import Card from '../components/Card';
+import { Ionicons } from '@expo/vector-icons';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useEffect } from 'react';
+
+type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 const HomeScreen = () => {
-  const [text, setText] = useState('');
-  const [items, setItems] = useState([
-    { id: '1', text: 'Item 1' },
-    { id: '2', text: 'Item 2' },
-    { id: '3', text: 'Item 3' },
-  ]);
+  const navigation = useNavigation<NavigationProp>();
 
-  const addItem = () => {
-    if (text.trim()) {
-      setItems([...items, { id: Date.now().toString(), text }]);
-      setText('');
-    }
-  };
+  // const [totalMotos, setTotalMotos] = useState(0);
+  // const [emAnalise, setEmAnalise] = useState(0);
+  // const [emManutencao, setEmManutencao] = useState(0);
+  // const [prontas, setProntas] = useState(0);
+
+  // const navigateToRegister = () => {
+  //   navigation.navigate('Moto');
+  // };
+
+  // const navigateToList = () => {
+  //   navigation.navigate('ListMotos');
+  // };
+
+  // useEffect(() => {
+  //   const loadMotos = async () => {
+  //     const stored = await AsyncStorage.getItem('motos');
+  //     if (stored) {
+  //       const motos = JSON.parse(stored);
+  
+  //       setTotalMotos(motos.length);
+  
+  //       const analise = motos.filter((moto: any) => moto.departamento === 'AVALIAÇÃO').length;
+  //       const manutencao = motos.filter((moto: any) => moto.departamento === 'MANUTENÇÃO').length;
+  //       const prontas = motos.filter((moto: any) => moto.departamento === 'PRONTA PARA USO').length;
+  
+  //       setEmAnalise(analise);
+  //       setEmManutencao(manutencao);
+  //       setProntas(prontas);
+  //     }
+  //   };
+  
+  //   const unsubscribe = navigation.addListener('focus', loadMotos); // Recarrega sempre que voltar pra Home
+  
+  //   loadMotos();
+  
+  //   return unsubscribe;
+  // }, [navigation]);
 
   return (
-    <Container>
-      <HeaderContainer>
-        <HeaderTitle>Meu Primeiro App</HeaderTitle>
-      </HeaderContainer>
+    <View style={styles.header}>
+      <Header title="Página Inicial"/>
+      <View style={styles.container}>
+        <ScrollView contentContainerStyle={styles.content}>
+          <View style={styles.cardsContainer}>
+            {/* <Card title="Motos Cadastradas" count={totalMotos} backgroundColor="#455A64" />
+            <Card title="Motos em Avaliação" count={emAnalise} backgroundColor="#8D6E63" />
+            <Card title="Motos em Manutenção" count={emManutencao} backgroundColor="#6D4C41" />
+            <Card title="Motos prontas para Uso" count={prontas} backgroundColor="#547A6E" /> */}
+          </View>
 
-      <Content>
-        <TextApresentacao>Adicione itens na Lista!</TextApresentacao>
-        <Input
-          placeholder="Digite um item"
-          onChangeText={setText}
-          value={text}
-        />
+          <View>
+            {/* <QuickAccessButton
+              title="Cadastrar Moto"
+              onPress={navigateToRegister}
+              icon={<Ionicons name="add-circle-outline" size={24} color="white" />}
+            />
 
-        <AddButton onPress={addItem}>
-          <ButtonText>Adicionar</ButtonText>
-        </AddButton>
+            <QuickAccessButton
+              title="Ver Lista de Motos"
+              onPress={navigateToList}
+              icon={<Ionicons name="list-outline" size={24} color="white" />}
+            /> */}
+          </View>
+        </ScrollView>
+      </View>
+    </View>
 
-        <FlatList
-          data={items}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <ListItem>
-              <ListItemText>{item.text}</ListItemText>
-            </ListItem>
-          )}
-        />
-
-        <Button
-          title="Sobre"
-          onPress={() => Alert.alert('Bem-vindo', 'Aplicativo React Native')}
-          color="#6c757d"
-        />
-
-      </Content>
-    </Container>
   );
 };
 
-const Container = styled.ScrollView`
-  flex: 1;
-  background-color: #f8f9fa;
-`;
-
-const Content = styled.View`
-  padding: 20px;
-`;
-
-const TextApresentacao = styled.Text`
-  color: black;
-  padding: 20px 0;
-`;
-
-const Input = styled.TextInput`
-  height: 40px;
-  border: 1px solid #ced4da;
-  border-radius: 5px;
-  margin-bottom: 10px;
-  padding: 10px;
-`;
-
-const AddButton = styled.TouchableOpacity`
-  background-color:rgb(89, 116, 167);
-  padding: 10px;
-  border-radius: 5px;
-  margin-bottom: 20px;
-  align-items: center;
-`;
-
-const ButtonText = styled.Text`
-  color: white;
-  font-weight: bold;
-`;
-
-const ListItem = styled.View`
-  background-color: white;
-  padding: 15px;
-  border-radius: 5px;
-  margin-bottom: 10px;
-  elevation: 2;
-`;
-
-const ListItemText = styled.Text`
-  font-size: 16px;
-`;
+const styles = StyleSheet.create({
+  header: {
+    flex: 1,
+  },
+  container: {
+    flex: 1,
+    padding: 10,
+    backgroundColor: '#FFF',
+  },
+  content: {
+    justifyContent: 'center',
+  },
+  cardsContainer: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 10,
+  }
+});
 
 export default HomeScreen;
