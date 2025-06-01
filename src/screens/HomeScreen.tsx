@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
 import Header from '../components/Header';
 import { useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '../types/types';
@@ -33,34 +33,34 @@ const HomeScreen = () => {
   //     const stored = await AsyncStorage.getItem('motos');
   //     if (stored) {
   //       const motos = JSON.parse(stored);
-  
+
   //       setTotalMotos(motos.length);
-  
+
   //       const analise = motos.filter((moto: any) => moto.departamento === 'AVALIAÇÃO').length;
   //       const manutencao = motos.filter((moto: any) => moto.departamento === 'MANUTENÇÃO').length;
   //       const prontas = motos.filter((moto: any) => moto.departamento === 'PRONTA PARA USO').length;
-  
+
   //       setEmAnalise(analise);
   //       setEmManutencao(manutencao);
   //       setProntas(prontas);
   //     }
   //   };
-  
+
   //   const unsubscribe = navigation.addListener('focus', loadMotos); // Recarrega sempre que voltar pra Home
-  
+
   //   loadMotos();
-  
+
   //   return unsubscribe;
   // }, [navigation]);
 
   return (
     <View style={styles.header}>
-      <Header title="Página Inicial"/>
+      <Header title="Página Inicial" />
       <View style={styles.container}>
         <ScrollView contentContainerStyle={styles.content}>
           <Text style={styles.title}>Locais Cadastrados</Text>
           <View style={styles.cardsContainer}>
-            <Card nome="Casa" temperatura='35ºC' endereco='Rua das Palmeiras, 198' alertas={4}/>
+            <Card nome="Casa" temperatura='35ºC' endereco='Rua das Palmeiras, 198' alertas={4} />
           </View>
 
           <View>
@@ -75,6 +75,12 @@ const HomeScreen = () => {
               onPress={navigateToList}
               icon={<Ionicons name="list-outline" size={24} color="white" />}
             /> */}
+            <TouchableOpacity style={styles.btnCadastrar}>
+                <Image
+                    source={require('../../assets/images/icone-plus.png')}
+                />
+              <Text style={[styles.btnText, { fontFamily: 'MontserratRegular' }]}>Cadastrar Local</Text>
+            </TouchableOpacity>
           </View>
         </ScrollView>
       </View>
@@ -95,7 +101,7 @@ const styles = StyleSheet.create({
   content: {
     justifyContent: 'center',
   },
-  title:{
+  title: {
     color: '#E5E5E5',
     fontSize: 20,
     fontWeight: 'bold',
@@ -107,6 +113,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 10,
+  },
+    btnCadastrar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 10,
+    backgroundColor: '#8A202C',
+    borderRadius: 8,
+    marginBottom: 16,
+    gap:10
+  },
+    btnText: {
+    fontSize: 18,
+    color: '#fff',
+    fontWeight: 'bold',
   }
 });
 

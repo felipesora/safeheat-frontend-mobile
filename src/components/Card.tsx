@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
         padding: 10,
         borderRadius: 8,
         width: 180,
-        marginTop: 20
+        marginTop: 10
     },
     btnAlertsText: {
         fontSize: 14,
