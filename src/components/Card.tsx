@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useFonts } from 'expo-font';
 import { Image } from 'react-native';
 
@@ -41,6 +41,20 @@ const Card: React.FC<CardProps> = ({ nome, temperatura, endereco, alertas }) => 
                 <Text style={[styles.alert, { fontFamily: 'MontserratRegular' }]}>
                     Total de Alertas: {alertas}
                 </Text>
+            </View>
+
+            <TouchableOpacity style={styles.btnAlerts}>
+                <Text style={[styles.btnAlertsText, { fontFamily: 'MontserratRegular' }]}>Ver Alertas</Text>
+            </TouchableOpacity>
+
+            <View style={styles.btns}>
+                <TouchableOpacity style={styles.btnEditRemove}>
+                    <Text style={[styles.btnEditRemoveText, { fontFamily: 'MontserratRegular' }]}>Editar</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.btnEditRemove}>
+                    <Text style={[styles.btnEditRemoveText, { fontFamily: 'MontserratRegular' }]}>Remover</Text>
+                </TouchableOpacity>
             </View>
 
         </View>
@@ -86,11 +100,44 @@ const styles = StyleSheet.create({
         color: '#A0A0A0',
         marginBottom: 20,
     },
-    alert:{
+    alert: {
         fontSize: 18,
         color: '#8B1A10',
         fontWeight: 'bold',
     },
+    btnAlerts: {
+        backgroundColor: 'transparent',
+        borderWidth: 2,
+        borderColor: '#C1440E',
+        padding: 10,
+        borderRadius: 8,
+        width: 180,
+        marginTop: 20
+    },
+    btnAlertsText: {
+        fontSize: 14,
+        color: '#C1440E',
+        textAlign: 'center'
+    },
+    btns: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 8,
+        marginTop: 15
+    },
+    btnEditRemove:{
+        backgroundColor: '#444444',
+        borderWidth: 2,
+        borderColor: '#8A202C',
+        padding: 10,
+        borderRadius: 8,
+        width: 130,
+    },
+    btnEditRemoveText:{
+        fontSize: 14,
+        color: '#E5E5E5',
+        textAlign: 'center'
+    }
 });
 
 export default Card;
