@@ -20,9 +20,9 @@ const HomeScreen = () => {
   // const [emManutencao, setEmManutencao] = useState(0);
   // const [prontas, setProntas] = useState(0);
 
-  // const navigateToRegister = () => {
-  //   navigation.navigate('Moto');
-  // };
+  const navigateToRegister = () => {
+    navigation.navigate('Local');
+  };
 
   // const navigateToList = () => {
   //   navigation.navigate('ListMotos');
@@ -75,7 +75,7 @@ const HomeScreen = () => {
               onPress={navigateToList}
               icon={<Ionicons name="list-outline" size={24} color="white" />}
             /> */}
-            <TouchableOpacity style={styles.btnCadastrar}>
+            <TouchableOpacity style={styles.btnCadastrar} onPress={navigateToRegister}>
                 <Image
                     source={require('../../assets/images/icone-plus.png')}
                 />

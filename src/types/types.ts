@@ -16,6 +16,7 @@ export type RootStackParamList = {
     Login: undefined;
     Cadastro: undefined;
     Home: undefined;
+    Local: undefined
     // Moto: undefined;
     // ListMotos: undefined;
     // EditMoto: { moto: Moto };
