@@ -10,7 +10,7 @@ interface CardProps {
     alertas: number;
 }
 
-const Card: React.FC<CardProps> = ({ nome, temperatura, endereco, alertas }) => {
+const CardLocal: React.FC<CardProps> = ({ nome, temperatura, endereco, alertas }) => {
     const [fontsLoaded] = useFonts({
         MontserratRegular: require('../../assets/fonts/Montserrat-Regular.ttf'),
         MontserratBold: require('../../assets/fonts/Montserrat-Bold.ttf'),
@@ -140,4 +140,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default Card;
+export default CardLocal;

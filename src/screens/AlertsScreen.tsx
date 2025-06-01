@@ -5,14 +5,14 @@ import { useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '../types/types';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ScrollView } from 'react-native-gesture-handler';
-import CardLocal from '../components/CardLocal';
+import CardAlerta from '../components/CardAlerta';
 import { Ionicons } from '@expo/vector-icons';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect } from 'react';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
-const HomeScreen = () => {
+const AlertsScreen = () => {
   const navigation = useNavigation<NavigationProp>();
 
   // const [totalMotos, setTotalMotos] = useState(0);
@@ -20,9 +20,9 @@ const HomeScreen = () => {
   // const [emManutencao, setEmManutencao] = useState(0);
   // const [prontas, setProntas] = useState(0);
 
-  const navigateToRegister = () => {
-    navigation.navigate('Local');
-  };
+    const handleBackToHome = () => {
+        navigation.navigate('Home');
+    };
 
   // const navigateToList = () => {
   //   navigation.navigate('ListMotos');
@@ -55,12 +55,12 @@ const HomeScreen = () => {
 
   return (
     <View style={styles.header}>
-      <Header title="Página Inicial" />
+      <Header title="Alertas" />
       <View style={styles.container}>
         <ScrollView contentContainerStyle={styles.content}>
-          <Text style={styles.title}>Locais Cadastrados</Text>
+          <Text style={styles.title}>Alertas do local</Text>
           <View style={styles.cardsContainer}>
-            <CardLocal nome="Casa" temperatura='35ºC' endereco='Rua das Palmeiras, 198' alertas={4} />
+            <CardAlerta temperatura='42.7°C' nivelRisco='Crítico' descricao='Risco extremo de calor nessa região'/>
           </View>
 
           <View>
@@ -75,12 +75,9 @@ const HomeScreen = () => {
               onPress={navigateToList}
               icon={<Ionicons name="list-outline" size={24} color="white" />}
             /> */}
-            <TouchableOpacity style={styles.btnCadastrar} onPress={navigateToRegister}>
-                <Image
-                    source={require('../../assets/images/icone-plus.png')}
-                />
-              <Text style={[styles.btnText, { fontFamily: 'MontserratRegular' }]}>Cadastrar Local</Text>
-            </TouchableOpacity>
+                    <TouchableOpacity style={styles.btnVoltar} onPress={handleBackToHome}>
+                        <Text style={[styles.btnVoltarText, { fontFamily: 'MontserratRegular' }]}>Voltar</Text>
+                    </TouchableOpacity>
           </View>
         </ScrollView>
       </View>
@@ -127,7 +124,20 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#fff',
     fontWeight: 'bold',
-  }
+  },
+      btnVoltar: {
+        backgroundColor: '#8A202C',
+        paddingVertical: 12,
+        borderRadius: 5,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 10
+    },
+    btnVoltarText: {
+        color: '#fff',
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
 });
 
-export default HomeScreen;
+export default AlertsScreen;
