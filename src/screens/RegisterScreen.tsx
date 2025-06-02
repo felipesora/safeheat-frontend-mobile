@@ -104,6 +104,7 @@ const RegisterScreen = () => {
         value={name}
         onChangeText={setName}
         placeholder="Nome"
+        placeholderTextColor="#A0A0A0"
       />
 
       <TextInput
@@ -111,6 +112,7 @@ const RegisterScreen = () => {
         value={email}
         onChangeText={setEmail}
         placeholder="E-mail"
+        placeholderTextColor="#A0A0A0"
         keyboardType="email-address"
         autoCapitalize="none"
       />
@@ -120,6 +122,7 @@ const RegisterScreen = () => {
         value={password}
         onChangeText={setPassword}
         placeholder="Senha"
+        placeholderTextColor="#A0A0A0"
         secureTextEntry
       />
 

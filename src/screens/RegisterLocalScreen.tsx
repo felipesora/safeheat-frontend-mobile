@@ -106,12 +106,14 @@ const RegisterLocalScreen = () => {
                     <TextInput
                         style={[styles.input, { fontFamily: 'MontserratRegular' }]}
                         placeholder="Nome"
+                        placeholderTextColor="#A0A0A0"
                     />
 
                     <Text style={[styles.label, { fontFamily: 'MontserratBold' }]}>CEP</Text>
                     <TextInput
                         style={[styles.input, { fontFamily: 'MontserratRegular' }]}
                         placeholder="CEP"
+                        placeholderTextColor="#A0A0A0"
                     />
 
 
@@ -119,6 +121,7 @@ const RegisterLocalScreen = () => {
                     <TextInput
                         style={[styles.input, { fontFamily: 'MontserratRegular' }]}
                         placeholder="Rua"
+                        placeholderTextColor="#A0A0A0"
                     />
 
 
@@ -126,6 +129,7 @@ const RegisterLocalScreen = () => {
                     <TextInput
                         style={[styles.input, { fontFamily: 'MontserratRegular' }]}
                         placeholder="Número"
+                        placeholderTextColor="#A0A0A0"
                     />
 
 
@@ -133,6 +137,7 @@ const RegisterLocalScreen = () => {
                     <TextInput
                         style={[styles.input, { fontFamily: 'MontserratRegular' }]}
                         placeholder="Complemento"
+                        placeholderTextColor="#A0A0A0"
                     />
 
 
@@ -140,6 +145,7 @@ const RegisterLocalScreen = () => {
                     <TextInput
                         style={[styles.input, { fontFamily: 'MontserratRegular' }]}
                         placeholder="Bairro"
+                        placeholderTextColor="#A0A0A0"
                     />
 
 
@@ -147,6 +153,7 @@ const RegisterLocalScreen = () => {
                     <TextInput
                         style={[styles.input, { fontFamily: 'MontserratRegular' }]}
                         placeholder="Cidade"
+                        placeholderTextColor="#A0A0A0"
                     />
 
 
@@ -154,6 +161,7 @@ const RegisterLocalScreen = () => {
                     <TextInput
                         style={[styles.input, { fontFamily: 'MontserratRegular' }]}
                         placeholder="Estado ex: (SP)"
+                        placeholderTextColor="#A0A0A0"
                     />
 
 

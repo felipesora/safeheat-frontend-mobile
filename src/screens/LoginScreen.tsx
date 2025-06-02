@@ -70,6 +70,7 @@ const LoginScreen = () => {
         value={email}
         onChangeText={setEmail}
         placeholder="E-mail"
+        placeholderTextColor="#A0A0A0"
         keyboardType="email-address"
         autoCapitalize="none"
       />
@@ -79,6 +80,7 @@ const LoginScreen = () => {
         value={senha}
         onChangeText={setSenha}
         placeholder="Senha"
+        placeholderTextColor="#A0A0A0"
         secureTextEntry
       />
 
