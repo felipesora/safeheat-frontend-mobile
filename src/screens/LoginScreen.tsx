@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert, Image } from 'react-native';
-// import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { buscarUsuarios } from '../services/usuarioService';
 import { useNavigation } from '@react-navigation/native';
 import { TouchableOpacity } from 'react-native';
 import { RootStackParamList } from '../types/types';
@@ -18,52 +19,42 @@ const LoginScreen = () => {
   const navigation = useNavigation<NavigationProp>();
 
   const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+  const [senha, setSenha] = useState<string>('');
   const [error, setError] = useState<string>('');
-  const [mensagem, SetMensagem] = useState<string>('');
+  const [mensagem, setMensagem] = useState<string>('');
 
+  const handleLogin = async () => {
+    if (!email || !senha) {
+      setError('Preencha todos os campos');
+      return;
+    }
 
+    try {
+      const usuarios = await buscarUsuarios();
+      const usuario = usuarios.find(
+        (u: any) => u.email === email && u.senha === senha
+      );
 
-//   const handleLogin = async () => {
-//     if (!email || !password) {
-//       setError('Preencha todos os campos!');
-//       return;
-//     }
+      if (usuario) {
+        
+        await AsyncStorage.setItem('usuarioId', usuario.id_usuario.toString());
+        setError('');
+        setMensagem('Login realizado com sucesso!');
 
-//     try {
-//       const storedUsers = await AsyncStorage.getItem('users');
-//       if (!storedUsers) {
-//         setError('Usuário não encontrado. Faça o cadastro primeiro.');
-//         return;
-//       }
+        setTimeout(() => {
+          navigation.navigate('Home');
+        }, 2000);
 
-//       const parsedUsers = JSON.parse(storedUsers);
+      } else {
+        setError('Email ou senha incorretos');
+      }
 
-//       const foundUser = parsedUsers.find(
-//         (user: any) => user.email === email && user.password === password
-//       );
+    } catch (e) {
+      console.error(e);
+      setError('Erro ao conectar com o servidor');
+    };
 
-//       if (foundUser) {
-//         await AsyncStorage.setItem('loggedUser', JSON.stringify({
-//           email: foundUser.email,
-//           name: foundUser.name,
-//         }));
-//         SetMensagem('Login realizado!');
-//         setError('');
-
-//         setTimeout(() => {
-//           setError('');
-//           SetMensagem('');
-//           navigation.navigate('Home');
-//         }, 2000);
-//       } else {
-//         setError('E-mail ou senha incorretos.');
-//       }
-//     } catch (e) {
-//       console.error('Erro ao acessar o AsyncStorage', e);
-//       Alert.alert('Erro', 'Não foi possível realizar o login.');
-//     }
-//   };
+  }
 
   return (
     <View style={styles.container}>
@@ -85,8 +76,8 @@ const LoginScreen = () => {
 
       <TextInput
         style={[styles.input, { fontFamily: 'MontserratRegular' }]}
-        value={password}
-        onChangeText={setPassword}
+        value={senha}
+        onChangeText={setSenha}
         placeholder="Senha"
         secureTextEntry
       />
@@ -94,7 +85,7 @@ const LoginScreen = () => {
       {mensagem ? <Text style={[styles.success, { fontFamily: 'MontserratRegular' }]}>{mensagem}</Text> : null}
       {error ? <Text style={[styles.error, { fontFamily: 'MontserratRegular' }]}>{error}</Text> : null}
 
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button} onPress={handleLogin}>
         <Text style={[styles.buttonText, { fontFamily: 'MontserratRegular' }]}>Entrar</Text>
       </TouchableOpacity>
 

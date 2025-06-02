@@ -6,6 +6,7 @@ import { TouchableOpacity } from 'react-native';
 import { RootStackParamList } from '../types/types';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useFonts } from 'expo-font';
+import { cadastrarUsuario } from '../services/usuarioService';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -23,41 +24,71 @@ const RegisterScreen = () => {
   const [error, setError] = useState<string>('');
   const [mensagem, SetMensagem] = useState<string>('');
 
-//   const handleRegister = async () => {
-//     if (!name || !email || !password) {
-//       setError('Preencha todos os campos!');
-//       return;
-//     }
+  //   const handleRegister = async () => {
+  //     if (!name || !email || !password) {
+  //       setError('Preencha todos os campos!');
+  //       return;
+  //     }
 
-//     try {
-//       const existingUsers = await AsyncStorage.getItem('users');
-//       const users = existingUsers ? JSON.parse(existingUsers) : [];
+  //     try {
+  //       const existingUsers = await AsyncStorage.getItem('users');
+  //       const users = existingUsers ? JSON.parse(existingUsers) : [];
 
-//       const emailExists = users.some((user: any) => user.email === email);
-//       if (emailExists) {
-//         setError('Este e-mail já está cadastrado.');
-//         return;
-//       }
+  //       const emailExists = users.some((user: any) => user.email === email);
+  //       if (emailExists) {
+  //         setError('Este e-mail já está cadastrado.');
+  //         return;
+  //       }
 
-//       const newUser = { name, email, password };
-//       const updatedUsers = [...users, newUser];
+  //       const newUser = { name, email, password };
+  //       const updatedUsers = [...users, newUser];
 
-//       await AsyncStorage.setItem('users', JSON.stringify(updatedUsers));
+  //       await AsyncStorage.setItem('users', JSON.stringify(updatedUsers));
 
-//       setError('');
-//       SetMensagem('Cadastro realizado!');
+  //       setError('');
+  //       SetMensagem('Cadastro realizado!');
 
-//       setTimeout(() => {
-//         setError('');
-//         SetMensagem('');
-//         navigation.navigate('Login');
-//       }, 2000);
+  //       setTimeout(() => {
+  //         setError('');
+  //         SetMensagem('');
+  //         navigation.navigate('Login');
+  //       }, 2000);
 
-//     } catch (e) {
-//       console.error('Erro ao salvar no AsyncStorage', e);
-//       alert('Não foi possível realizar o cadastro.');
-//     }
-//   };
+  //     } catch (e) {
+  //       console.error('Erro ao salvar no AsyncStorage', e);
+  //       alert('Não foi possível realizar o cadastro.');
+  //     }
+  //   };
+
+  const handleRegister = async () => {
+    if (!name || !email || !password) {
+      setError('Preencha todos os campos!');
+      return;
+    }
+
+    try {
+      await cadastrarUsuario({
+        nome: name,
+        email: email,
+        senha: password
+      });
+
+      setError('');
+      SetMensagem('Cadastro realizado com sucesso!');
+
+      setTimeout(() => {
+        SetMensagem('');
+        navigation.navigate('Login');
+      }, 2000);
+    } catch (error: any) {
+      console.error('Erro no cadastro:', error);
+      if (error.response && error.response.data && error.response.data.message) {
+        setError(error.response.data.message);
+      } else {
+        setError('Erro ao cadastrar. Tente novamente.');
+      }
+    }
+  }
 
   return (
     <View style={styles.container}>
@@ -95,7 +126,7 @@ const RegisterScreen = () => {
       {mensagem ? <Text style={[styles.success, { fontFamily: 'MontserratRegular' }]}>{mensagem}</Text> : null}
       {error ? <Text style={[styles.error, { fontFamily: 'MontserratRegular' }]}>{error}</Text> : null}
 
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button} onPress={handleRegister}> 
         <Text style={[styles.buttonText, { fontFamily: 'MontserratRegular' }]}>Cadastrar</Text>
       </TouchableOpacity>
 
@@ -104,8 +135,8 @@ const RegisterScreen = () => {
           Já possui uma conta?{' '}
         </Text>
         <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-            <Text style={styles.textLink}>Faça login</Text>
-          </TouchableOpacity>
+          <Text style={styles.textLink}>Faça login</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -129,7 +160,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#E5E5E5'
   },
-  titleLogo:{
+  titleLogo: {
     color: '#8A202C'
   },
   subtitle: {
