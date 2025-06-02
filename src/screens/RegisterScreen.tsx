@@ -96,7 +96,7 @@ const RegisterScreen = () => {
         source={require('../../assets/images/logo-SafeHeat.png')}
         style={styles.logo}
       />
-      <Text style={[styles.title, { fontFamily: 'MontserratBold' }]}>Bem-vindo à <span style={styles.titleLogo}>SafeHeat</span></Text>
+      <Text style={[styles.title, { fontFamily: 'MontserratBold' }]}>Bem-vindo à <Text style={styles.titleLogo}>SafeHeat</Text></Text>
       <Text style={[styles.subtitle, { fontFamily: 'MontserratRegular' }]}>Cadastre-se para acessar o dashboard</Text>
 
       <TextInput
