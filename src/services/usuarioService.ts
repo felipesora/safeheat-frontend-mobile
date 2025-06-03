@@ -71,11 +71,19 @@ export const buscarUsuarios = async () => {
 
 export const buscarLocaisPorUsuario = async (idUsuario: number): Promise<Local[]> => {
   try {
-
     const response = await api.get<UsuarioResponseDTO>(`/usuarios/${idUsuario}`);
-    return response.data.locais ?? [];
-  } catch (error) {
+    const locais = response.data.locais ?? [];
 
+    // Ordenar os alertas de cada local por data_alerta crescente
+    const locaisOrdenados = locais.map((local) => ({
+      ...local,
+      alertas: [...local.alertas].sort((a, b) =>
+        new Date(a.data_alerta).getTime() - new Date(b.data_alerta).getTime()
+      ),
+    }));
+
+    return locaisOrdenados;
+  } catch (error) {
     console.error('Erro ao buscar locais do usuário:', error);
     throw error;
   }

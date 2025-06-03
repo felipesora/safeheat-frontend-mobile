@@ -2,20 +2,32 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useFonts } from 'expo-font';
 import { Image } from 'react-native';
+import { parse, format } from 'date-fns';
 
 interface CardProps {
     temperatura: string;
     nivelRisco: string;
     descricao: string;
+    dataHora: string;
 }
 
-const CardLocal: React.FC<CardProps> = ({ temperatura, nivelRisco, descricao }) => {
+const CardLocal: React.FC<CardProps> = ({ temperatura, nivelRisco, descricao, dataHora }) => {
     const [fontsLoaded] = useFonts({
         MontserratRegular: require('../../assets/fonts/Montserrat-Regular.ttf'),
         MontserratBold: require('../../assets/fonts/Montserrat-Bold.ttf'),
     });
 
     if (!fontsLoaded) return null;
+
+    const formatarDataHora = (dataHoraString: string): string => {
+    try {
+        const corrigido = dataHoraString.replace(/:(\d{3})(\d*)$/, '.$1');
+        const date = new Date(corrigido);
+        return format(date, "dd/MM/yyyy HH:mm");
+    } catch (error) {
+        return dataHoraString;
+    }
+};
 
     return (
         <View style={styles.card}>
@@ -41,6 +53,10 @@ const CardLocal: React.FC<CardProps> = ({ temperatura, nivelRisco, descricao }) 
 
             <Text style={[styles.descricao, { fontFamily: 'MontserratRegular' }]}>
                 {descricao}
+            </Text>
+
+            <Text style={[styles.descricao, { fontFamily: 'MontserratRegular' }]}>
+                Data: <Text>{formatarDataHora(dataHora)}</Text>
             </Text>
 
             <View style={styles.btn}>

@@ -51,7 +51,7 @@ useEffect(() => {
               <CardLocal
                 key={local.id_local}
                 nome={local.nome}
-                temperatura={local.alertas[0]?.temperatura ?? 'N/A'}
+                temperatura={local.alertas.at(-1)?.temperatura ?? 'N/A'}
                 endereco={`${local.rua}, ${local.numero} - ${local.bairro}, ${local.cidade} - ${local.estado}`}
                 alertas={local.alertas.length}
                 localCompleto={local}

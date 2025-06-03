@@ -84,7 +84,7 @@ const handleDelete = () => {
                 </Text>
             </View>
 
-            <TouchableOpacity style={styles.btnAlerts}>
+            <TouchableOpacity style={styles.btnAlerts} onPress={() => navigation.navigate('Alertas', { local: localCompleto })}>
                 <Text style={[styles.btnAlertsText, { fontFamily: 'MontserratRegular' }]}>Ver Alertas</Text>
             </TouchableOpacity>
 
