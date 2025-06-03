@@ -22,21 +22,23 @@ const HomeScreen = () => {
     navigation.navigate('Local');
   };
 
-  useEffect(() => {
-    const fetchLocais = async () => {
-      try {
-        const idUsuario = await AsyncStorage.getItem('usuarioId');
-        if (!idUsuario) return;
+const carregarLocais = async () => {
+  try {
+    const idUsuario = await AsyncStorage.getItem('usuarioId');
+    if (!idUsuario) return;
 
-        const locaisEncontrados = await buscarLocaisPorUsuario(Number(idUsuario));
-        setLocais(locaisEncontrados);
-      } catch (error) {
-        console.error('Erro ao carregar locais:', error);
-      }
-    };
+    const locaisEncontrados = await buscarLocaisPorUsuario(Number(idUsuario));
+    setLocais(locaisEncontrados);
+  } catch (error) {
+    console.error('Erro ao carregar locais:', error);
+  }
+};
 
-    fetchLocais();
-  }, []);
+useEffect(() => {
+  carregarLocais();
+}, []);
+
+
 
   return (
     <View style={styles.header}>
@@ -53,6 +55,7 @@ const HomeScreen = () => {
                 endereco={`${local.rua}, ${local.numero} - ${local.bairro}, ${local.cidade} - ${local.estado}`}
                 alertas={local.alertas.length}
                 localCompleto={local}
+                onDelete={carregarLocais}
               />
             ))}
           </View>

@@ -100,3 +100,13 @@ export const editarLocal = async (id_local: number, local: LocalRequestDTO) => {
     throw error;
   }
 };
+
+export const deletarLocal = async (id_local: number) => {
+  try {
+    const response = await api.delete(`/locais/${id_local}`);
+    return response.data;
+  } catch (error) {
+    console.error('Erro ao deletar local:', error);
+    throw error;
+  }
+};

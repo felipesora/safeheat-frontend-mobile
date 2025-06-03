@@ -1,11 +1,11 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { useFonts } from 'expo-font';
 import { Image } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types/types';
 import { useNavigation } from '@react-navigation/native';
-import { Local } from '../services/usuarioService';
+import { deletarLocal, Local } from '../services/usuarioService';
 
 interface CardProps {
     nome: string;
@@ -13,11 +13,12 @@ interface CardProps {
     endereco: string;
     alertas: number;
     localCompleto: Local;
+    onDelete: () => void;
 }
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
-const CardLocal: React.FC<CardProps> = ({ nome, temperatura, endereco, alertas, localCompleto }) => {
+const CardLocal: React.FC<CardProps> = ({ nome, temperatura, endereco, alertas, localCompleto, onDelete}) => {
 const navigation = useNavigation<NavigationProp>();
 
     const [fontsLoaded] = useFonts({
@@ -30,6 +31,33 @@ const navigation = useNavigation<NavigationProp>();
     const navigateToEdit = () => {
     navigation.navigate('EditarLocal', { local: localCompleto });
   };
+
+const handleDelete = () => {
+  Alert.alert(
+    'Confirmar Exclusão',
+    'Tem certeza que deseja deletar este local?',
+    [
+      {
+        text: 'Cancelar',
+        style: 'cancel',
+      },
+      {
+        text: 'Deletar',
+        onPress: async () => {
+          try {
+            await deletarLocal(localCompleto.id_local);
+            alert('Local removido com sucesso!');
+            onDelete();
+          } catch (error) {
+            alert('Erro ao remover local.');
+          }
+        },
+        style: 'destructive',
+      },
+    ],
+    { cancelable: false }
+  );
+};
 
     return (
         <View style={styles.card}>
@@ -65,7 +93,7 @@ const navigation = useNavigation<NavigationProp>();
                     <Text style={[styles.btnEditRemoveText, { fontFamily: 'MontserratRegular' }]}>Editar</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.btnEditRemove}>
+                <TouchableOpacity style={styles.btnEditRemove} onPress={handleDelete}>
                     <Text style={[styles.btnEditRemoveText, { fontFamily: 'MontserratRegular' }]}>Remover</Text>
                 </TouchableOpacity>
             </View>
