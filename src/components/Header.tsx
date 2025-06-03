@@ -26,8 +26,8 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
       navigation.navigate('Login');
     }
     catch (error) {
-     Alert.alert('Erro', 'Não foi possível realizar o logout.');
-   }
+      Alert.alert('Erro', 'Não foi possível realizar o logout.');
+    }
   }
 
   return (

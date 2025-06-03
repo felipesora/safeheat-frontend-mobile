@@ -15,9 +15,9 @@ const AlertsScreen = () => {
   const route = useRoute<RouteParams>();
   const { local } = route.params;
 
-    const handleBackToHome = () => {
-        navigation.navigate('Home');
-    };
+  const handleBackToHome = () => {
+    navigation.navigate('Home');
+  };
 
   return (
     <View style={styles.header}>
@@ -28,18 +28,18 @@ const AlertsScreen = () => {
 
           <View style={styles.cardsContainer}>
             {local.alertas.length === 0 ? (
-          <Text style={styles.semAlerta}>Nenhum alerta registrado para este local.</Text>
-        ) : (
-          local.alertas.map((alerta) => (
-            <CardAlerta key={alerta.id_alerta} temperatura={alerta.temperatura} nivelRisco={alerta.nivel_risco} descricao={alerta.mensagem} dataHora={alerta.data_alerta} />
-          ))
-        )}
+              <Text style={styles.semAlerta}>Nenhum alerta registrado para este local.</Text>
+            ) : (
+              local.alertas.map((alerta) => (
+                <CardAlerta key={alerta.id_alerta} temperatura={alerta.temperatura} nivelRisco={alerta.nivel_risco} descricao={alerta.mensagem} dataHora={alerta.data_alerta} />
+              ))
+            )}
           </View>
 
           <View>
-                    <TouchableOpacity style={styles.btnVoltar} onPress={handleBackToHome}>
-                        <Text style={[styles.btnVoltarText, { fontFamily: 'MontserratRegular' }]}>Voltar</Text>
-                    </TouchableOpacity>
+            <TouchableOpacity style={styles.btnVoltar} onPress={handleBackToHome}>
+              <Text style={[styles.btnVoltarText, { fontFamily: 'MontserratRegular' }]}>Voltar</Text>
+            </TouchableOpacity>
           </View>
         </ScrollView>
       </View>
@@ -73,34 +73,34 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 10,
   },
-    btnCadastrar: {
+  btnCadastrar: {
     flexDirection: 'row',
     alignItems: 'center',
     padding: 10,
     backgroundColor: '#8A202C',
     borderRadius: 8,
     marginBottom: 16,
-    gap:10
+    gap: 10
   },
-    btnText: {
+  btnText: {
     fontSize: 18,
     color: '#fff',
     fontWeight: 'bold',
   },
-      btnVoltar: {
-        backgroundColor: '#8A202C',
-        paddingVertical: 12,
-        borderRadius: 5,
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginTop: 10
-    },
-    btnVoltarText: {
-        color: '#fff',
-        fontSize: 16,
-        fontWeight: 'bold',
-    },
-    semAlerta: {
+  btnVoltar: {
+    backgroundColor: '#8A202C',
+    paddingVertical: 12,
+    borderRadius: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 10
+  },
+  btnVoltarText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  semAlerta: {
     color: '#aaa',
     fontSize: 16,
     fontStyle: 'italic',

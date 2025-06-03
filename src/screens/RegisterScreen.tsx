@@ -129,7 +129,7 @@ const RegisterScreen = () => {
       {mensagem ? <Text style={[styles.success, { fontFamily: 'MontserratRegular' }]}>{mensagem}</Text> : null}
       {error ? <Text style={[styles.error, { fontFamily: 'MontserratRegular' }]}>{error}</Text> : null}
 
-      <TouchableOpacity style={styles.button} onPress={handleRegister}> 
+      <TouchableOpacity style={styles.button} onPress={handleRegister}>
         <Text style={[styles.buttonText, { fontFamily: 'MontserratRegular' }]}>Cadastrar</Text>
       </TouchableOpacity>
 

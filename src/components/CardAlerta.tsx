@@ -37,7 +37,7 @@ const CardLocal: React.FC<CardProps> = ({ temperatura, nivelRisco, descricao, da
                     style={styles.icon}
                 />
                 <Text style={[styles.textoTemperatura, { fontFamily: 'MontserratBold' }]}>
-                    Temperatura: <Text>{temperatura}</Text>
+                    Temperatura: <Text>{temperatura}°C</Text>
                 </Text>
             </View>
 

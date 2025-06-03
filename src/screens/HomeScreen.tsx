@@ -22,21 +22,21 @@ const HomeScreen = () => {
     navigation.navigate('Local');
   };
 
-const carregarLocais = async () => {
-  try {
-    const idUsuario = await AsyncStorage.getItem('usuarioId');
-    if (!idUsuario) return;
+  const carregarLocais = async () => {
+    try {
+      const idUsuario = await AsyncStorage.getItem('usuarioId');
+      if (!idUsuario) return;
 
-    const locaisEncontrados = await buscarLocaisPorUsuario(Number(idUsuario));
-    setLocais(locaisEncontrados);
-  } catch (error) {
-    console.error('Erro ao carregar locais:', error);
-  }
-};
+      const locaisEncontrados = await buscarLocaisPorUsuario(Number(idUsuario));
+      setLocais(locaisEncontrados);
+    } catch (error) {
+      console.error('Erro ao carregar locais:', error);
+    }
+  };
 
-useEffect(() => {
-  carregarLocais();
-}, []);
+  useEffect(() => {
+    carregarLocais();
+  }, []);
 
 
 
@@ -47,7 +47,22 @@ useEffect(() => {
         <ScrollView contentContainerStyle={styles.content}>
           <Text style={styles.title}>Locais Cadastrados</Text>
           <View style={styles.cardsContainer}>
-            {locais.map((local) => (
+            {locais.length === 0 ? (
+              <Text style={styles.semAlerta}>Nenhum Local registrado.</Text>
+            ) : (
+              locais.map((local) => (
+                <CardLocal
+                  key={local.id_local}
+                  nome={local.nome}
+                  temperatura={local.alertas.at(-1)?.temperatura ?? 'N/A'}
+                  endereco={`${local.rua}, ${local.numero} - ${local.bairro}, ${local.cidade} - ${local.estado}`}
+                  alertas={local.alertas.length}
+                  localCompleto={local}
+                  onDelete={carregarLocais}
+                />
+              ))
+            )}
+            {/* {locais.map((local) => (
               <CardLocal
                 key={local.id_local}
                 nome={local.nome}
@@ -57,7 +72,7 @@ useEffect(() => {
                 localCompleto={local}
                 onDelete={carregarLocais}
               />
-            ))}
+            ))} */}
           </View>
 
           <View>
@@ -114,6 +129,11 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#fff',
     fontWeight: 'bold',
+  },
+  semAlerta: {
+    color: '#aaa',
+    fontSize: 16,
+    fontStyle: 'italic',
   }
 });
 

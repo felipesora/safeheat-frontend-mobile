@@ -36,7 +36,7 @@ const LoginScreen = () => {
       );
 
       if (usuario) {
-        
+
         await AsyncStorage.setItem('usuarioId', usuario.id_usuario.toString());
         setError('');
         setMensagem('Login realizado com sucesso!');

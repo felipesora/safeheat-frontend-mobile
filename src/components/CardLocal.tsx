@@ -69,7 +69,7 @@ const handleDelete = () => {
                 <Text style={[styles.title, { fontFamily: 'MontserratBold' }]}>{nome}</Text>
             </View>
             <Text style={[styles.detail, { fontFamily: 'MontserratRegular' }]}>
-                Temperatura: <Text style={styles.bold}>{temperatura}</Text>
+                Temperatura: <Text style={styles.bold}>{temperatura}°C</Text>
             </Text>
             <Text style={[styles.adress, { fontFamily: 'MontserratRegular' }]}>
                 Endereço: <Text>{endereco}</Text>
