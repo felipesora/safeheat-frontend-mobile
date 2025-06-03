@@ -41,6 +41,18 @@ export interface UsuarioResponseDTO {
   locais: Local[];
 }
 
+export interface LocalRequestDTO {
+  nome: string;
+  rua: string;
+  numero: string;
+  complemento: string;
+  bairro: string;
+  cidade: string;
+  estado: string;
+  cep: string;
+  id_usuario: number;
+}
+
 
 export const cadastrarUsuario = async (usuario: UsuarioRequestDTO) => {
   return await api.post('/usuarios', usuario);
@@ -65,6 +77,16 @@ export const buscarLocaisPorUsuario = async (idUsuario: number): Promise<Local[]
   } catch (error) {
 
     console.error('Erro ao buscar locais do usuário:', error);
+    throw error;
+  }
+};
+
+export const cadastrarLocal = async (local: LocalRequestDTO) => {
+  try {
+    const response = await api.post('/locais', local);
+    return response.data;
+  } catch (error) {
+    console.error('Erro ao cadastrar local:', error);
     throw error;
   }
 };

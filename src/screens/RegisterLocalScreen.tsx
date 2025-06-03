@@ -1,98 +1,77 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
-// import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ScrollView } from 'react-native-gesture-handler';
 import { RootStackParamList } from '../types/types';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 import Header from '../components/Header';
 import { useFonts } from 'expo-font';
-
-// type Movimentacao = {
-//   departamento: string;
-//   horario: string;
-// };
-
-// type Moto = {
-//   id_moto: number;
-//   placa: string;
-//   modelo: string;
-//   status: string;
-//   departamento: string;
-//   movimentacoes: Movimentacao[];
-// };
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { cadastrarLocal } from '../services/usuarioService';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
-// const STORAGE_KEY = 'motos';
-
 const RegisterLocalScreen = () => {
     const navigation = useNavigation<NavigationProp>();
+
+    const [nome, setNome] = useState('');
+    const [cep, setCep] = useState('');
+    const [rua, setRua] = useState('');
+    const [numero, setNumero] = useState('');
+    const [complemento, setComplemento] = useState('');
+    const [bairro, setBairro] = useState('');
+    const [cidade, setCidade] = useState('');
+    const [estado, setEstado] = useState('');
+    const [mensagem, setMensagem] = useState('');
+    const [erro, setErro] = useState('');
 
     const [fontsLoaded] = useFonts({
         MontserratRegular: require('../../assets/fonts/Montserrat-Regular.ttf'),
         MontserratBold: require('../../assets/fonts/Montserrat-Bold.ttf'),
     });
 
-    //   const [placa, setPlaca] = useState('');
-    //   const [modelo, setModelo] = useState('');
-    //   const [status, setStatus] = useState('Em avaliação');
-    //   const [departamento, setDepartamento] = useState('ENTRADA');
-    //   const [motos, setMotos] = useState<Moto[]>([]);
-    //   const [nextId, setNextId] = useState(1);
-    //   const [mensageError, setMensageError] = useState<string>('');
-    //   const [mensageSucess, SetMensageSucess] = useState<string>('');
-
     const handleBackToHome = () => {
         navigation.navigate('Home');
     };
 
-    //   useEffect(() => {
-    //     const loadMotos = async () => {
-    //       const storedMotos = await AsyncStorage.getItem(STORAGE_KEY);
-    //       if (storedMotos) {
-    //         const parsed = JSON.parse(storedMotos);
-    //         setMotos(parsed);
-    //         if (parsed.length > 0) {
-    //           const lastId = parsed[parsed.length - 1].id_moto;
-    //           setNextId(lastId + 1);
-    //         }
-    //       }
-    //     };
-    //     loadMotos();
-    //   }, []);
+    const handleSubmit = async () => {
+        try {
+            const usuarioId = await AsyncStorage.getItem('usuarioId');
+            const idUsuarioConvertido = Number(usuarioId);
+            if (isNaN(idUsuarioConvertido)) {
+                setErro('ID de usuário inválido');
+                return;
+            }
 
-    //   const handleRegister = async () => {
-    //     if (!placa || !modelo) {
-    //       setMensageError('Preencha todos os campos.')
-    //       SetMensageSucess('');
-    //       return;
-    //     }
+            const local = {
+                nome,
+                rua,
+                numero,
+                complemento,
+                bairro,
+                cidade,
+                estado,
+                cep,
+                id_usuario: idUsuarioConvertido,
+            };
 
-    //     const novaMoto: Moto = {
-    //       id_moto: nextId,
-    //       placa,
-    //       modelo,
-    //       status,
-    //       departamento,
-    //       movimentacoes: [{
-    //         departamento,
-    //         horario: new Date().toLocaleString()
-    //       }],
-    //     };
+            await cadastrarLocal(local);
+            setMensagem('Local cadastrado com sucesso!');
+            setErro('');
 
-    //     const updatedMotos = [...motos, novaMoto];
-    //     setMotos(updatedMotos);
-    //     setNextId(nextId + 1);
-    //     setPlaca('');
-    //     setModelo('');
-    //     setStatus('Em manutenção');
-    //     setDepartamento('ENTRADA');
-
-    //     await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(updatedMotos));
-    //     SetMensageSucess('Moto cadastrada com sucesso!');
-    //     setMensageError('');
-    //   };
+            setNome('');
+            setCep('');
+            setRua('');
+            setNumero('');
+            setComplemento('');
+            setBairro('');
+            setCidade('');
+            setEstado('');
+        } catch (error) {
+            setErro('Erro ao cadastrar local. Tente novamente.');
+            setMensagem('');
+        }
+    };
 
     return (
         <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -107,6 +86,8 @@ const RegisterLocalScreen = () => {
                         style={[styles.input, { fontFamily: 'MontserratRegular' }]}
                         placeholder="Nome"
                         placeholderTextColor="#A0A0A0"
+                        value={nome}
+                        onChangeText={setNome}
                     />
 
                     <Text style={[styles.label, { fontFamily: 'MontserratBold' }]}>CEP</Text>
@@ -114,6 +95,8 @@ const RegisterLocalScreen = () => {
                         style={[styles.input, { fontFamily: 'MontserratRegular' }]}
                         placeholder="CEP"
                         placeholderTextColor="#A0A0A0"
+                        value={cep}
+                        onChangeText={setCep}
                     />
 
 
@@ -122,6 +105,8 @@ const RegisterLocalScreen = () => {
                         style={[styles.input, { fontFamily: 'MontserratRegular' }]}
                         placeholder="Rua"
                         placeholderTextColor="#A0A0A0"
+                        value={rua}
+                        onChangeText={setRua}
                     />
 
 
@@ -130,6 +115,8 @@ const RegisterLocalScreen = () => {
                         style={[styles.input, { fontFamily: 'MontserratRegular' }]}
                         placeholder="Número"
                         placeholderTextColor="#A0A0A0"
+                        value={numero}
+                        onChangeText={setNumero}
                     />
 
 
@@ -138,6 +125,8 @@ const RegisterLocalScreen = () => {
                         style={[styles.input, { fontFamily: 'MontserratRegular' }]}
                         placeholder="Complemento"
                         placeholderTextColor="#A0A0A0"
+                        value={complemento}
+                        onChangeText={setComplemento}
                     />
 
 
@@ -146,6 +135,8 @@ const RegisterLocalScreen = () => {
                         style={[styles.input, { fontFamily: 'MontserratRegular' }]}
                         placeholder="Bairro"
                         placeholderTextColor="#A0A0A0"
+                        value={bairro}
+                        onChangeText={setBairro}
                     />
 
 
@@ -154,6 +145,8 @@ const RegisterLocalScreen = () => {
                         style={[styles.input, { fontFamily: 'MontserratRegular' }]}
                         placeholder="Cidade"
                         placeholderTextColor="#A0A0A0"
+                        value={cidade}
+                        onChangeText={setCidade}
                     />
 
 
@@ -162,13 +155,15 @@ const RegisterLocalScreen = () => {
                         style={[styles.input, { fontFamily: 'MontserratRegular' }]}
                         placeholder="Estado ex: (SP)"
                         placeholderTextColor="#A0A0A0"
+                        value={estado}
+                        onChangeText={setEstado}
                     />
 
 
-                    {/* {mensageSucess ? <Text style={[styles.success, { fontFamily: 'MontserratRegular' }]}>{mensageSucess}</Text> : null}
-        {mensageError ? <Text style={[styles.error, { fontFamily: 'MontserratRegular' }]}>{mensageError}</Text> : null} */}
+                    {mensagem ? <Text style={[styles.success, { fontFamily: 'MontserratRegular' }]}>{mensagem}</Text> : null}
+                    {erro ? <Text style={[styles.error, { fontFamily: 'MontserratRegular' }]}>{erro}</Text> : null}
 
-                    <TouchableOpacity style={styles.button}>
+                    <TouchableOpacity style={styles.button} onPress={handleSubmit}>
                         <Text style={[styles.buttonText, { fontFamily: 'MontserratRegular' }]}>Cadastrar Moto</Text>
                     </TouchableOpacity>
 
