@@ -7,51 +7,36 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ScrollView } from 'react-native-gesture-handler';
 import CardLocal from '../components/CardLocal';
 import { Ionicons } from '@expo/vector-icons';
-// import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect } from 'react';
+import { buscarLocaisPorUsuario, Local } from '../services/usuarioService';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 const HomeScreen = () => {
   const navigation = useNavigation<NavigationProp>();
 
-  // const [totalMotos, setTotalMotos] = useState(0);
-  // const [emAnalise, setEmAnalise] = useState(0);
-  // const [emManutencao, setEmManutencao] = useState(0);
-  // const [prontas, setProntas] = useState(0);
+  const [locais, setLocais] = useState<Local[]>([]);
 
   const navigateToRegister = () => {
     navigation.navigate('Local');
   };
 
-  // const navigateToList = () => {
-  //   navigation.navigate('ListMotos');
-  // };
+  useEffect(() => {
+    const fetchLocais = async () => {
+      try {
+        const idUsuario = await AsyncStorage.getItem('usuarioId');
+        if (!idUsuario) return;
 
-  // useEffect(() => {
-  //   const loadMotos = async () => {
-  //     const stored = await AsyncStorage.getItem('motos');
-  //     if (stored) {
-  //       const motos = JSON.parse(stored);
+        const locaisEncontrados = await buscarLocaisPorUsuario(Number(idUsuario));
+        setLocais(locaisEncontrados);
+      } catch (error) {
+        console.error('Erro ao carregar locais:', error);
+      }
+    };
 
-  //       setTotalMotos(motos.length);
-
-  //       const analise = motos.filter((moto: any) => moto.departamento === 'AVALIAÇÃO').length;
-  //       const manutencao = motos.filter((moto: any) => moto.departamento === 'MANUTENÇÃO').length;
-  //       const prontas = motos.filter((moto: any) => moto.departamento === 'PRONTA PARA USO').length;
-
-  //       setEmAnalise(analise);
-  //       setEmManutencao(manutencao);
-  //       setProntas(prontas);
-  //     }
-  //   };
-
-  //   const unsubscribe = navigation.addListener('focus', loadMotos); // Recarrega sempre que voltar pra Home
-
-  //   loadMotos();
-
-  //   return unsubscribe;
-  // }, [navigation]);
+    fetchLocais();
+  }, []);
 
   return (
     <View style={styles.header}>
@@ -60,25 +45,23 @@ const HomeScreen = () => {
         <ScrollView contentContainerStyle={styles.content}>
           <Text style={styles.title}>Locais Cadastrados</Text>
           <View style={styles.cardsContainer}>
-            <CardLocal nome="Casa" temperatura='35ºC' endereco='Rua das Palmeiras, 198' alertas={4} />
+            {locais.map((local) => (
+              <CardLocal
+                key={local.id_local}
+                nome={local.nome}
+                temperatura={local.alertas[0]?.temperatura ?? 'N/A'}
+                endereco={`${local.rua}, ${local.numero} - ${local.bairro}, ${local.cidade} - ${local.estado}`}
+                alertas={local.alertas.length}
+              />
+            ))}
           </View>
 
           <View>
-            {/* <QuickAccessButton
-              title="Cadastrar Moto"
-              onPress={navigateToRegister}
-              icon={<Ionicons name="add-circle-outline" size={24} color="white" />}
-            />
 
-            <QuickAccessButton
-              title="Ver Lista de Motos"
-              onPress={navigateToList}
-              icon={<Ionicons name="list-outline" size={24} color="white" />}
-            /> */}
             <TouchableOpacity style={styles.btnCadastrar} onPress={navigateToRegister}>
-                <Image
-                    source={require('../../assets/images/icone-plus.png')}
-                />
+              <Image
+                source={require('../../assets/images/icone-plus.png')}
+              />
               <Text style={[styles.btnText, { fontFamily: 'MontserratRegular' }]}>Cadastrar Local</Text>
             </TouchableOpacity>
           </View>
@@ -114,16 +97,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 10,
   },
-    btnCadastrar: {
+  btnCadastrar: {
     flexDirection: 'row',
     alignItems: 'center',
     padding: 10,
     backgroundColor: '#8A202C',
     borderRadius: 8,
     marginBottom: 16,
-    gap:10
+    gap: 10
   },
-    btnText: {
+  btnText: {
     fontSize: 18,
     color: '#fff',
     fontWeight: 'bold',
