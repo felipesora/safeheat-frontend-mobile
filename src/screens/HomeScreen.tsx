@@ -52,6 +52,7 @@ const HomeScreen = () => {
                 temperatura={local.alertas[0]?.temperatura ?? 'N/A'}
                 endereco={`${local.rua}, ${local.numero} - ${local.bairro}, ${local.cidade} - ${local.estado}`}
                 alertas={local.alertas.length}
+                localCompleto={local}
               />
             ))}
           </View>

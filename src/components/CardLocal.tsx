@@ -2,21 +2,34 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useFonts } from 'expo-font';
 import { Image } from 'react-native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../types/types';
+import { useNavigation } from '@react-navigation/native';
+import { Local } from '../services/usuarioService';
 
 interface CardProps {
     nome: string;
     temperatura: string;
     endereco: string;
     alertas: number;
+    localCompleto: Local;
 }
 
-const CardLocal: React.FC<CardProps> = ({ nome, temperatura, endereco, alertas }) => {
+type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
+
+const CardLocal: React.FC<CardProps> = ({ nome, temperatura, endereco, alertas, localCompleto }) => {
+const navigation = useNavigation<NavigationProp>();
+
     const [fontsLoaded] = useFonts({
         MontserratRegular: require('../../assets/fonts/Montserrat-Regular.ttf'),
         MontserratBold: require('../../assets/fonts/Montserrat-Bold.ttf'),
     });
 
     if (!fontsLoaded) return null;
+
+    const navigateToEdit = () => {
+    navigation.navigate('EditarLocal', { local: localCompleto });
+  };
 
     return (
         <View style={styles.card}>
@@ -48,7 +61,7 @@ const CardLocal: React.FC<CardProps> = ({ nome, temperatura, endereco, alertas }
             </TouchableOpacity>
 
             <View style={styles.btns}>
-                <TouchableOpacity style={styles.btnEditRemove}>
+                <TouchableOpacity style={styles.btnEditRemove} onPress={navigateToEdit}>
                     <Text style={[styles.btnEditRemoveText, { fontFamily: 'MontserratRegular' }]}>Editar</Text>
                 </TouchableOpacity>
 

@@ -2,6 +2,9 @@
 //     departamento: string;
 //     horario: string;
 //   };
+
+import { Local } from "../services/usuarioService";
+
   
 //   export type Moto = {
 //     id_moto: number;
@@ -18,6 +21,7 @@ export type RootStackParamList = {
     Home: undefined;
     Local: undefined
     Abrigos: undefined
+    EditarLocal: {local: Local};
     // Moto: undefined;
     // ListMotos: undefined;
     // EditMoto: { moto: Moto };

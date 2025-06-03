@@ -8,6 +8,7 @@ import RegisterScreen from './src/screens/RegisterScreen';
 import RegisterLocalScreen from './src/screens/RegisterLocalScreen';
 import AlertsScreen from './src/screens/AlertsScreen';
 import AbrigosScreen from './src/screens/AbrigosScreen';
+import EditLocalScreen from './src/screens/EditLocalScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -19,6 +20,7 @@ export default function App() {
         <Stack.Screen name='Cadastro' component={RegisterScreen}/>
         <Stack.Screen name='Home' component={HomeScreen}/>
         <Stack.Screen name='Local' component={RegisterLocalScreen}/>
+        <Stack.Screen name='EditarLocal' component={EditLocalScreen}/>
         <Stack.Screen name='Alertas' component={AlertsScreen}/>
         <Stack.Screen name='Abrigos' component={AbrigosScreen}/>
       </Stack.Navigator>

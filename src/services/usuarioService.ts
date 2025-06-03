@@ -90,3 +90,13 @@ export const cadastrarLocal = async (local: LocalRequestDTO) => {
     throw error;
   }
 };
+
+export const editarLocal = async (id_local: number, local: LocalRequestDTO) => {
+  try {
+    const response = await api.put(`/locais/${id_local}`, local);
+    return response.data;
+  } catch (error) {
+    console.error('Erro ao editar local:', error);
+    throw error;
+  }
+};

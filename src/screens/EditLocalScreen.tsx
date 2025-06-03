@@ -4,15 +4,18 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { RootStackParamList } from '../types/types';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
+import { RouteProp, useRoute } from '@react-navigation/native';
 import Header from '../components/Header';
 import { useFonts } from 'expo-font';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { cadastrarLocal } from '../services/usuarioService';
+import { editarLocal } from '../services/usuarioService';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
+type EditLocalRouteProp = RouteProp<RootStackParamList, 'EditarLocal'>;
 
-const RegisterLocalScreen = () => {
+const EditLocalScreen = () => {
     const navigation = useNavigation<NavigationProp>();
+    const route = useRoute<EditLocalRouteProp>();
 
     const [nome, setNome] = useState('');
     const [cep, setCep] = useState('');
@@ -24,6 +27,8 @@ const RegisterLocalScreen = () => {
     const [estado, setEstado] = useState('');
     const [mensagem, setMensagem] = useState('');
     const [erro, setErro] = useState('');
+    const [idLocal, setIdLocal] = useState<number | null>(null);
+    const [idUsuario, setIdUsuario] = useState<number | null>(null);
 
     const [fontsLoaded] = useFonts({
         MontserratRegular: require('../../assets/fonts/Montserrat-Regular.ttf'),
@@ -34,41 +39,50 @@ const RegisterLocalScreen = () => {
         navigation.navigate('Home');
     };
 
+    useEffect(() => {
+        const { local } = route.params;
+        if (local) {
+            setIdLocal(local.id_local);
+            setNome(local.nome);
+            setCep(local.cep);
+            setRua(local.rua);
+            setNumero(local.numero);
+            setComplemento(local.complemento);
+            setBairro(local.bairro);
+            setCidade(local.cidade);
+            setEstado(local.estado);
+            setIdUsuario(local.id_usuario);
+        }
+    }, []);
+
     const handleSubmit = async () => {
+        if (!idLocal || !idUsuario) {
+            setErro('Erro interno: ID inválido');
+            return;
+        }
+
+        const localEditado = {
+            nome,
+            cep,
+            rua,
+            numero,
+            complemento,
+            bairro,
+            cidade,
+            estado,
+            id_usuario: idUsuario
+        };
+
         try {
-            const usuarioId = await AsyncStorage.getItem('usuarioId');
-            const idUsuarioConvertido = Number(usuarioId);
-            if (isNaN(idUsuarioConvertido)) {
-                setErro('ID de usuário inválido');
-                return;
-            }
-
-            const local = {
-                nome,
-                rua,
-                numero,
-                complemento,
-                bairro,
-                cidade,
-                estado,
-                cep,
-                id_usuario: idUsuarioConvertido,
-            };
-
-            await cadastrarLocal(local);
-            setMensagem('Local cadastrado com sucesso!');
+            await editarLocal(idLocal, localEditado);
+            setMensagem('Local editado com sucesso!');
             setErro('');
 
-            setNome('');
-            setCep('');
-            setRua('');
-            setNumero('');
-            setComplemento('');
-            setBairro('');
-            setCidade('');
-            setEstado('');
+            setTimeout(() => {
+                navigation.navigate('Home');
+            }, 2000);
         } catch (error) {
-            setErro('Erro ao cadastrar local. Tente novamente.');
+            setErro('Erro ao editar local. Tente novamente.');
             setMensagem('');
         }
     };
@@ -76,7 +90,7 @@ const RegisterLocalScreen = () => {
     return (
         <ScrollView contentContainerStyle={styles.scrollContainer}>
             <View style={styles.innerContainer}>
-                <Header title="Cadastrar Locais" />
+                <Header title="Editar Local" />
 
                 <View style={styles.containerMain}>
                     <Text style={[styles.title, { fontFamily: 'MontserratBold' }]}>Preecha todos os dados</Text>
@@ -164,7 +178,7 @@ const RegisterLocalScreen = () => {
                     {erro ? <Text style={[styles.error, { fontFamily: 'MontserratRegular' }]}>{erro}</Text> : null}
 
                     <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-                        <Text style={[styles.buttonText, { fontFamily: 'MontserratRegular' }]}>Cadastrar Local</Text>
+                        <Text style={[styles.buttonText, { fontFamily: 'MontserratRegular' }]}>Editar Local</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.button} onPress={handleBackToHome}>
@@ -238,4 +252,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default RegisterLocalScreen;
+export default EditLocalScreen;
