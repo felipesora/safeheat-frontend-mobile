@@ -30,6 +30,8 @@ O **SafeHeat** é uma aplicação mobile criada para auxiliar a população em m
 - Tela inicial de autenticação.
 - Após login, redireciona para a tela principal com os locais do usuário.
 
+![Tela de Login](assets/imagens-readme/safeheat-login.png)
+
 ### 🏠 Tela Inicial (Locais do Usuário)
 - Lista de **locais cadastrados** em formato de card:
   - Nome do local
@@ -39,6 +41,8 @@ O **SafeHeat** é uma aplicação mobile criada para auxiliar a população em m
   - Botões: Ver Alertas | Editar | Remover
 - Botão para **cadastrar novo local**, caso não existam registros.
 
+![Tela de Login](assets/imagens-readme/safeheat-pagina-inicial.png)
+
 ### ⚠️ Tela de Alertas
 - Exibe os **alertas relacionados a um local específico**, em formato de card:
   - Temperatura registrada
@@ -47,11 +51,15 @@ O **SafeHeat** é uma aplicação mobile criada para auxiliar a população em m
   - Data e hora do alerta
   - Botão: Ver Abrigos
 
+![Tela de Login](assets/imagens-readme/safeheat-alertas.png)
+
 ### 🛑 Tela de Abrigos Públicos
 - Mostra os **abrigos disponíveis** cadastrados pela gestão pública (API .NET):
   - Nome do abrigo
   - Endereço completo
   - Ocupação atual / capacidade total
+
+![Tela de Login](assets/imagens-readme/safeheat-abrigos.png)
 
 ---
 
