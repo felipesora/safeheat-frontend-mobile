@@ -1,58 +1,39 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Text, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
 import Header from '../components/Header';
 import { useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '../types/types';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ScrollView } from 'react-native-gesture-handler';
-import CardAlerta from '../components/CardAlerta';
-import { Ionicons } from '@expo/vector-icons';
-// import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect } from 'react';
 import CardAbrigo from '../components/CardAbrigo';
+import { buscarAbrigos, Abrigo } from '../services/abrigosService';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 const AbrigosScreen = () => {
   const navigation = useNavigation<NavigationProp>();
+  const [abrigos, setAbrigos] = useState<Abrigo[]>([]);
+  const [carregando, setCarregando] = useState(true);
 
-  // const [totalMotos, setTotalMotos] = useState(0);
-  // const [emAnalise, setEmAnalise] = useState(0);
-  // const [emManutencao, setEmManutencao] = useState(0);
-  // const [prontas, setProntas] = useState(0);
+  const handleBackToHome = () => {
+    navigation.navigate('Home');
+  };
 
-    const handleBackToHome = () => {
-        navigation.navigate('Home');
+  useEffect(() => {
+    const carregarAbrigos = async () => {
+      try {
+        const data = await buscarAbrigos();
+        setAbrigos(data);
+      } catch (error) {
+        console.error('Erro ao carregar abrigos:', error);
+      } finally {
+        setCarregando(false);
+      }
     };
 
-  // const navigateToList = () => {
-  //   navigation.navigate('ListMotos');
-  // };
-
-  // useEffect(() => {
-  //   const loadMotos = async () => {
-  //     const stored = await AsyncStorage.getItem('motos');
-  //     if (stored) {
-  //       const motos = JSON.parse(stored);
-
-  //       setTotalMotos(motos.length);
-
-  //       const analise = motos.filter((moto: any) => moto.departamento === 'AVALIAÇÃO').length;
-  //       const manutencao = motos.filter((moto: any) => moto.departamento === 'MANUTENÇÃO').length;
-  //       const prontas = motos.filter((moto: any) => moto.departamento === 'PRONTA PARA USO').length;
-
-  //       setEmAnalise(analise);
-  //       setEmManutencao(manutencao);
-  //       setProntas(prontas);
-  //     }
-  //   };
-
-  //   const unsubscribe = navigation.addListener('focus', loadMotos); // Recarrega sempre que voltar pra Home
-
-  //   loadMotos();
-
-  //   return unsubscribe;
-  // }, [navigation]);
+    carregarAbrigos();
+  }, []);
 
   return (
     <View style={styles.header}>
@@ -60,25 +41,36 @@ const AbrigosScreen = () => {
       <View style={styles.container}>
         <ScrollView contentContainerStyle={styles.content}>
           <Text style={styles.title}>Abrigos Disponíveis</Text>
+
+          {/* Abrigo fixo */}
           <View style={styles.cardsContainer}>
-            <CardAbrigo nome='Abrigo Municipal – Zona Sul' endereco='Rua das Palmeiras, 123 – SP' ocupacao={40} total={60}/>
+            <CardAbrigo
+              nome="Abrigo Central"
+              endereco="Rua Fictícia, 123 - Bairro Exemplo, Cidade Teste - SP"
+              ocupacao={45}
+              total={150}
+            />
           </View>
 
+          {/* Lista vinda da API */}
+          {carregando ? (
+            <ActivityIndicator size="large" color="#fff" />
+          ) : (
+            abrigos.map((abrigo) => (
+              <View style={styles.cardsContainer} key={abrigo.id}>
+                <CardAbrigo
+                  nome={abrigo.nome}
+                  endereco={`${abrigo.rua}, ${abrigo.numero} - ${abrigo.bairro}, ${abrigo.cidade} - ${abrigo.estado}`}
+                  ocupacao={abrigo.ocupacaoAtual}
+                  total={abrigo.capacidadeTotal}
+                />
+              </View>
+            ))
+          )}
           <View>
-            {/* <QuickAccessButton
-              title="Cadastrar Moto"
-              onPress={navigateToRegister}
-              icon={<Ionicons name="add-circle-outline" size={24} color="white" />}
-            />
-
-            <QuickAccessButton
-              title="Ver Lista de Motos"
-              onPress={navigateToList}
-              icon={<Ionicons name="list-outline" size={24} color="white" />}
-            /> */}
-                    <TouchableOpacity style={styles.btnVoltar} onPress={handleBackToHome}>
-                        <Text style={[styles.btnVoltarText, { fontFamily: 'MontserratRegular' }]}>Voltar</Text>
-                    </TouchableOpacity>
+            <TouchableOpacity style={styles.btnVoltar} onPress={handleBackToHome}>
+              <Text style={[styles.btnVoltarText, { fontFamily: 'MontserratRegular' }]}>Voltar</Text>
+            </TouchableOpacity>
           </View>
         </ScrollView>
       </View>
@@ -112,33 +104,33 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 10,
   },
-    btnCadastrar: {
+  btnCadastrar: {
     flexDirection: 'row',
     alignItems: 'center',
     padding: 10,
     backgroundColor: '#8A202C',
     borderRadius: 8,
     marginBottom: 16,
-    gap:10
+    gap: 10
   },
-    btnText: {
+  btnText: {
     fontSize: 18,
     color: '#fff',
     fontWeight: 'bold',
   },
-      btnVoltar: {
-        backgroundColor: '#8A202C',
-        paddingVertical: 12,
-        borderRadius: 5,
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginTop: 10
-    },
-    btnVoltarText: {
-        color: '#fff',
-        fontSize: 16,
-        fontWeight: 'bold',
-    },
+  btnVoltar: {
+    backgroundColor: '#8A202C',
+    paddingVertical: 12,
+    borderRadius: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 10
+  },
+  btnVoltarText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
 });
 
 export default AbrigosScreen;

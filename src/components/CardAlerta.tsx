@@ -3,6 +3,9 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useFonts } from 'expo-font';
 import { Image } from 'react-native';
 import { parse, format } from 'date-fns';
+import { RootStackParamList } from '../types/types';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useNavigation } from '@react-navigation/native';
 
 interface CardProps {
     temperatura: string;
@@ -11,11 +14,19 @@ interface CardProps {
     dataHora: string;
 }
 
+type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
+
 const CardLocal: React.FC<CardProps> = ({ temperatura, nivelRisco, descricao, dataHora }) => {
+    const navigation = useNavigation<NavigationProp>();
+
     const [fontsLoaded] = useFonts({
         MontserratRegular: require('../../assets/fonts/Montserrat-Regular.ttf'),
         MontserratBold: require('../../assets/fonts/Montserrat-Bold.ttf'),
     });
+
+      const navigateToAbrigos = () => {
+    navigation.navigate('Abrigos');
+  };
 
     if (!fontsLoaded) return null;
 
@@ -60,7 +71,7 @@ const CardLocal: React.FC<CardProps> = ({ temperatura, nivelRisco, descricao, da
             </Text>
 
             <View style={styles.btn}>
-                <TouchableOpacity style={styles.btnAbrigos}>
+                <TouchableOpacity style={styles.btnAbrigos} onPress={navigateToAbrigos}>
                     <Text style={[styles.btnAbrigosText, { fontFamily: 'MontserratRegular' }]}>Ver Abrigos</Text>
                 </TouchableOpacity>
             </View>
