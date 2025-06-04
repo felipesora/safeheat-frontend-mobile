@@ -18,8 +18,8 @@ interface CardProps {
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
-const CardLocal: React.FC<CardProps> = ({ nome, temperatura, endereco, alertas, localCompleto, onDelete}) => {
-const navigation = useNavigation<NavigationProp>();
+const CardLocal: React.FC<CardProps> = ({ nome, temperatura, endereco, alertas, localCompleto, onDelete }) => {
+    const navigation = useNavigation<NavigationProp>();
 
     const [fontsLoaded] = useFonts({
         MontserratRegular: require('../../assets/fonts/Montserrat-Regular.ttf'),
@@ -29,35 +29,35 @@ const navigation = useNavigation<NavigationProp>();
     if (!fontsLoaded) return null;
 
     const navigateToEdit = () => {
-    navigation.navigate('EditarLocal', { local: localCompleto });
-  };
+        navigation.navigate('EditarLocal', { local: localCompleto });
+    };
 
-const handleDelete = () => {
-  Alert.alert(
-    'Confirmar Exclusão',
-    'Tem certeza que deseja deletar este local?',
-    [
-      {
-        text: 'Cancelar',
-        style: 'cancel',
-      },
-      {
-        text: 'Deletar',
-        onPress: async () => {
-          try {
-            await deletarLocal(localCompleto.id_local);
-            alert('Local removido com sucesso!');
-            onDelete();
-          } catch (error) {
-            alert('Erro ao remover local.');
-          }
-        },
-        style: 'destructive',
-      },
-    ],
-    { cancelable: false }
-  );
-};
+    const handleDelete = () => {
+        Alert.alert(
+            'Confirmar Exclusão',
+            'Tem certeza que deseja deletar este local?',
+            [
+                {
+                    text: 'Cancelar',
+                    style: 'cancel',
+                },
+                {
+                    text: 'Deletar',
+                    onPress: async () => {
+                        try {
+                            await deletarLocal(localCompleto.id_local);
+                            alert('Local removido com sucesso!');
+                            onDelete();
+                        } catch (error) {
+                            alert('Erro ao remover local.');
+                        }
+                    },
+                    style: 'destructive',
+                },
+            ],
+            { cancelable: false }
+        );
+    };
 
     return (
         <View style={styles.card}>
@@ -69,7 +69,7 @@ const handleDelete = () => {
                 <Text style={[styles.title, { fontFamily: 'MontserratBold' }]}>{nome}</Text>
             </View>
             <Text style={[styles.detail, { fontFamily: 'MontserratRegular' }]}>
-                Temperatura: <Text style={styles.bold}>{temperatura}°C</Text>
+                Temperatura: <Text style={styles.bold}> {isNaN(Number(temperatura)) ? temperatura : `${temperatura}°C`} </Text>
             </Text>
             <Text style={[styles.adress, { fontFamily: 'MontserratRegular' }]}>
                 Endereço: <Text>{endereco}</Text>
@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
         gap: 8,
         marginTop: 15
     },
-    btnEditRemove:{
+    btnEditRemove: {
         backgroundColor: '#444444',
         borderWidth: 2,
         borderColor: '#8A202C',
@@ -174,7 +174,7 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         width: 130,
     },
-    btnEditRemoveText:{
+    btnEditRemoveText: {
         fontSize: 14,
         color: '#E5E5E5',
         textAlign: 'center'
