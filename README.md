@@ -136,9 +136,10 @@ Essa API gerencia os abrigos públicos cadastrados pela gestão pública e é de
 
 >⚠️ Caso a API .NET não esteja disponível, o app mostra um abrigo fixo como fallback para testes.
 
+---
+
 ## 📽️ Vídeo de Demonstração da Solução Completa
 Veja o funcionamento completo da solução SafeHeat (Fullstack):
 
-[🔗 Assista à demonstração](https://www.youtube.com/watch?v=8jetkaAdImw)
+[🔗 Assista à demonstração](https://www.youtube.com/watch?v=zYGh5FbhCwE)
 
----
