@@ -130,8 +130,15 @@ const api = axios.create({
 
 ### 💻 API .NET (Abrigos Públicos)
 
-- Repositório: [safeheat-backend-java](https://github.com/felipesora/safeheat-backend-dotnet)
+- Repositório: [safeheat-backend-dotnet](https://github.com/felipesora/safeheat-backend-dotnet)
 
 Essa API gerencia os abrigos públicos cadastrados pela gestão pública e é desenvolvida com ASP.NET Core + MVC. Ela oferece endpoints RESTful documentados via Swagger, além de um painel Razor Pages para visualização.
 
 >⚠️ Caso a API .NET não esteja disponível, o app mostra um abrigo fixo como fallback para testes.
+
+## 📽️ Vídeo de Demonstração da Solução Completa
+Veja o funcionamento completo da solução SafeHeat (Fullstack):
+
+[🔗 Assista à demonstração](https://www.youtube.com/watch?v=8jetkaAdImw)
+
+---
